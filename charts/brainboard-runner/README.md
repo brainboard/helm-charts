@@ -17,6 +17,7 @@ helm install runner brainboard/brainboard-runner
 |-----|------|---------|-------------|
 | additionalLabels | object | `{}` |  |
 | affinity | object | `{}` | Affinity for pod assignment https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity |
+| config.api.endpoint | string | `"https://app.brainboard.co/api"` | brainboard API url |
 | config.concurrency | int | `4` | maximum number of concurrent jobs |
 | config.credentials.existingSecretName | string | `""` | name of an existing kubernetes secret containing RUNNER_TOKEN environment variable value if this is set, credentials.token value is ignored |
 | config.credentials.token | string | `"changeme"` | runner token generated in Brainboard Private selfhosted runner settings |

@@ -19,7 +19,7 @@ data:
       max_job_wait_time: {{ .Values.config.max_job_wait_time }}
 
     api:
-      endpoint: https://app.brainboard.co/api
+      endpoint: {{ .Values.config.api.endpoint }}
 
     docker:
       registry: "{{ .Values.config.plugins.registry }}"

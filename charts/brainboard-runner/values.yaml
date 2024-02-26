@@ -21,6 +21,10 @@ config:
   # -- maximum time to wait before starting a job - minimum=100ms
   max_job_wait_time: 1s
 
+  api:
+    # -- brainboard API url
+    endpoint: "https://app.brainboard.co/api"
+
   logLevel: "info"
 
   plugins:

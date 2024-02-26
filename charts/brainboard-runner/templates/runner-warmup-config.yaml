@@ -14,20 +14,13 @@ data:
     echo "waiting for docker daemon to be ready"
     sleep 2
     done
-  
-    docker pull {{ .Values.config.plugins.registry }}/opa:latest
-    docker pull {{ .Values.config.plugins.registry }}/drift:latest
-    docker pull {{ .Values.config.plugins.registry }}/terraform:latest
-    docker pull {{ .Values.config.plugins.registry }}/opentofu:latest
-    docker pull {{ .Values.config.plugins.registry }}/infracost:latest
-    docker pull {{ .Values.config.plugins.registry }}/terrascan:latest
-    docker pull {{ .Values.config.plugins.registry }}/tfsec:latest
-    docker pull {{ .Values.config.plugins.registry }}/webhook:latest
-    docker pull {{ .Values.config.plugins.registry }}/teams:latest
-    docker pull {{ .Values.config.plugins.registry }}/slack:latest
-    docker pull {{ .Values.config.plugins.registry }}/checkov:latest
-    docker pull {{ .Values.config.plugins.registry }}/email:latest
-  
+
+    PLUGINS=(opa drift terraform opentofu infracost terrascan tfsec webhook teams slack checkov email)
+
+    for PLUGIN in "${PLUGINS[@]}"; do
+      docker pull "{{ .Values.config.plugins.registry }}/${PLUGIN}:latest"
+    done
+
     echo "finished pulling plugins docker images"
   
     while true
