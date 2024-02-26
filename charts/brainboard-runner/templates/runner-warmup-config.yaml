@@ -15,9 +15,20 @@ data:
     sleep 2
     done
 
-    PLUGINS=(opa drift terraform opentofu infracost terrascan tfsec webhook teams slack checkov email)
+    set -- "opa" \
+    "drift" \
+    "terraform" \
+    "opentofu" \
+    "infracost" \
+    "terrascan" \
+    "tfsec" \
+    "webhook" \
+    "teams" \
+    "slack" \
+    "checkov" \
+    "email"
 
-    for PLUGIN in "${PLUGINS[@]}"; do
+    for PLUGIN in "$@"; do
       docker pull "{{ .Values.config.plugins.registry }}/${PLUGIN}:latest"
     done
 

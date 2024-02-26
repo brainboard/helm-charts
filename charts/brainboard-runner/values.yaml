@@ -44,7 +44,7 @@ resources:
 
 dind:
   image:
-    repository: docker #todo: update with custom image
+    repository: docker
     tag: 23.0.2-dind
     pullPolicy: IfNotPresent
 
@@ -81,7 +81,7 @@ warmup:
   # -- Set to true to add an additional container which will pull plugins image at start
   enabled: false
   image:
-    repository: docker #todo: update with custom image
-    tag: latest
+    repository: docker
+    tag: 23.0.2
     pullPolicy: IfNotPresent
 

@@ -75,7 +75,7 @@ spec:
               value: tcp://127.0.0.1:2376
             - name: DOCKER_CERT_PATH
               value: /certs/client
-            {{- if .Values.config.credentials.token }}
+            {{- if and .Values.config.credentials.token (not .Values.config.credentials.existingSecretName) }}
             - name: RUNNER_TOKEN
               value: {{ .Values.config.credentials.token }}
             {{- end }}
@@ -112,19 +112,21 @@ spec:
               name: runner-tmp
             - name: docker-certs
               mountPath: /certs
-            - mountPath: /secrets/certs/azure/
-              name: backend-azure-pkcs
+            - mountPath: /secrets
+              name: secrets
       volumes:
       - name: config
         configMap:
-          name: {{ .Release.Name }}-config
+          name: {{ template "brainboard-runner.fullname" . }}-config
       {{- if .Values.warmup.enabled }}
       - name: warmup
         configMap:
-          name: runner-warmup-config
+          name: {{ template "brainboard-runner.fullname" . }}-warmup-config
           defaultMode: 0744
       {{- end }}
       - name: docker-certs
         emptyDir: {}
       - name: runner-tmp
+        emptyDir: {}
+      - name: secrets
         emptyDir: {}
