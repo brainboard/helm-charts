@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "brainboard-runner.labels" . | nindent 4 }}
+  name: {{ template "brainboard-runner.fullname" . }}-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.yaml: |-
+    level: {{ .Values.config.logLevel }}
+
+    runner:
+      name: {{ .Values.config.name }}
+      concurrency: {{ .Values.config.concurrency }}
+      poll_interval: {{ .Values.config.poll_interval }}
+      {{- if .Values.config.job_max_execution_time }}
+      job_max_execution_time: {{ .Values.config.job_max_execution_time }}
+      {{- end }}
+      max_job_wait_time: {{ .Values.config.max_job_wait_time }}
+
+    api:
+      endpoint: https://app.brainboard.co/api
+
+    docker:
+      registry: "{{ .Values.config.plugins.registry }}"
+      shared_volume_path: "/secrets"

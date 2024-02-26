@@ -1,0 +1,37 @@
+{{ if .Values.warmup.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "brainboard-runner.fullname" . }}-warmup-config
+  namespace: {{ .Release.Namespace }}
+data:
+  warmup.sh: |-
+    #!/usr/bin/env sh
+  
+    # wait for docker daemon to be ready
+    while [ ! -f /certs/client/ca.pem ]
+    do
+    echo "waiting for docker daemon to be ready"
+    sleep 2
+    done
+  
+    docker pull {{ .Values.config.plugins.registry }}/opa:latest
+    docker pull {{ .Values.config.plugins.registry }}/drift:latest
+    docker pull {{ .Values.config.plugins.registry }}/terraform:latest
+    docker pull {{ .Values.config.plugins.registry }}/opentofu:latest
+    docker pull {{ .Values.config.plugins.registry }}/infracost:latest
+    docker pull {{ .Values.config.plugins.registry }}/terrascan:latest
+    docker pull {{ .Values.config.plugins.registry }}/tfsec:latest
+    docker pull {{ .Values.config.plugins.registry }}/webhook:latest
+    docker pull {{ .Values.config.plugins.registry }}/teams:latest
+    docker pull {{ .Values.config.plugins.registry }}/slack:latest
+    docker pull {{ .Values.config.plugins.registry }}/checkov:latest
+    docker pull {{ .Values.config.plugins.registry }}/email:latest
+  
+    echo "finished pulling plugins docker images"
+  
+    while true
+    do
+    tail -f /dev/null & wait ${!}
+    done
+{{- end }}

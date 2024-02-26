@@ -1,0 +1,130 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "brainboard-runner.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "brainboard-runner.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "brainboard-runner.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        {{- include "brainboard-runner.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "brainboard-runner.fullname" . }}
+      {{- if .Values.affinity }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{ toYaml .Values.nodeSelector }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- with .Values.tolerations }}
+        {{- toYaml . | nindent 6 }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.initContainers }}
+      initContainers: {{- toYaml .Values.initContainers | nindent 6 }}
+      {{- if .Values.resources }}
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+      {{- end }}
+      {{- end }}
+      containers:
+        {{- if .Values.warmup.enabled }}
+        - name: warmup
+          image: "{{.Values.warmup.image.repository}}:{{ .Values.warmup.image.tag }}"
+          imagePullPolicy: {{.Values.warmup.image.pullPolicy}}
+          command:
+            - /bin/warmup.sh
+          env:
+            - name: DOCKER_TLS_VERIFY
+              value: "1"
+            - name: DOCKER_HOST
+              value: tcp://127.0.0.1:2376
+            - name: DOCKER_CERT_PATH
+              value: /certs/client
+          volumeMounts:
+            - mountPath: /bin/warmup.sh
+              subPath: warmup.sh
+              name: warmup
+            - name: docker-certs
+              mountPath: /certs
+        {{- end}}
+        - name: runner
+          image: "{{.Values.image.repository}}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{.Values.image.pullPolicy}}
+          command:
+            - "/brainboard-runner"
+          args:
+            - "run"
+          env:
+            - name: RUNNER_CONFIG_FILE
+              value: /etc/brainboard-runner/config.yaml
+            - name: DOCKER_HOST
+              value: tcp://127.0.0.1:2376
+            - name: DOCKER_CERT_PATH
+              value: /certs/client
+            {{- if .Values.config.credentials.token }}
+            - name: RUNNER_TOKEN
+              value: {{ .Values.config.credentials.token }}
+            {{- end }}
+          {{- if .Values.config.credentials.existingSecretName }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.config.credentials.existingSecretName }}
+          {{- end }}
+          resources:
+            {{- with .Values.resources }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - mountPath: /etc/brainboard-runner
+              name: config
+            - mountPath: /tmp
+              name: runner-tmp
+            - name: docker-certs
+              mountPath: /certs
+        - name: dind
+          image: "{{ .Values.dind.image.repository }}:{{ .Values.dind.image.tag }}"
+          imagePullPolicy: {{ .Values.dind.image.pullPolicy }}
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: /certs
+          resources:
+            {{- with .Values.dind.resources }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: /tmp
+              name: runner-tmp
+            - name: docker-certs
+              mountPath: /certs
+            - mountPath: /secrets/certs/azure/
+              name: backend-azure-pkcs
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Release.Name }}-config
+      {{- if .Values.warmup.enabled }}
+      - name: warmup
+        configMap:
+          name: runner-warmup-config
+          defaultMode: 0744
+      {{- end }}
+      - name: docker-certs
+        emptyDir: {}
+      - name: runner-tmp
+        emptyDir: {}
