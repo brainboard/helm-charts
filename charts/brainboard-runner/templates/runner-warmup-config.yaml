@@ -1,0 +1,30 @@
+{{ if .Values.warmup.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "brainboard-runner.fullname" . }}-warmup-config
+  namespace: {{ .Release.Namespace }}
+data:
+  warmup.sh: |-
+    #!/usr/bin/env sh
+  
+    # wait for docker daemon to be ready
+    while [ ! -f /certs/client/ca.pem ]
+    do
+    echo "waiting for docker daemon to be ready"
+    sleep 2
+    done
+
+    PLUGINS=(opa drift terraform opentofu infracost terrascan tfsec webhook teams slack checkov email)
+
+    for PLUGIN in "${PLUGINS[@]}"; do
+      docker pull "{{ .Values.config.plugins.registry }}/${PLUGIN}:latest"
+    done
+
+    echo "finished pulling plugins docker images"
+  
+    while true
+    do
+    tail -f /dev/null & wait ${!}
+    done
+{{- end }}

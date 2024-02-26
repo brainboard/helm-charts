@@ -1,0 +1,87 @@
+nameOverride: ""
+fullnameOverride: ""
+
+additionalLabels: {}
+
+image:
+  repository: ghcr.io/brainboard/runner
+  tag: latest
+  pullPolicy: Always
+
+config:
+  # -- Name of the runner
+  name: "brainboard-runner"
+
+  # -- maximum number of concurrent jobs
+  concurrency: 4
+  # -- interval between each runner API request to check for new jobs
+  poll_interval: 10
+  # -- maximum job execution time, in minutes - EX: 60. Leave empty for no limit
+  job_max_execution_time: ""
+  # -- maximum time to wait before starting a job - minimum=100ms
+  max_job_wait_time: 1s
+
+  api:
+    # -- brainboard API url
+    endpoint: "https://app.brainboard.co/api"
+
+  logLevel: "info"
+
+  plugins:
+    registry: registry.gitlab.com/brainboard/plugins
+
+  credentials:
+    # -- runner token generated in Brainboard Private selfhosted runner settings
+    token: "changeme"
+    # -- name of an existing kubernetes secret containing RUNNER_TOKEN environment variable value
+    # if this is set, credentials.token value is ignored
+    existingSecretName: ""
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 128Mi
+
+dind:
+  image:
+    repository: docker #todo: update with custom image
+    tag: 23.0.2-dind
+    pullPolicy: IfNotPresent
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+
+# -- Additional custom init containers
+initContainers: []
+
+# -- Affinity for pod assignment
+# https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+
+# -- nodeSelector to apply for pod assignment
+# https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+nodeSelector: {}
+
+# -- Tolerations for pod assignment
+# https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: []
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+warmup:
+  # -- Set to true to add an additional container which will pull plugins image at start
+  enabled: false
+  image:
+    repository: docker #todo: update with custom image
+    tag: latest
+    pullPolicy: IfNotPresent
+
