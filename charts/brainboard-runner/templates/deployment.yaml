@@ -112,8 +112,6 @@ spec:
               name: runner-tmp
             - name: docker-certs
               mountPath: /certs
-            - mountPath: /secrets
-              name: secrets
       volumes:
       - name: config
         configMap:
@@ -127,6 +125,4 @@ spec:
       - name: docker-certs
         emptyDir: {}
       - name: runner-tmp
-        emptyDir: {}
-      - name: secrets
         emptyDir: {}
