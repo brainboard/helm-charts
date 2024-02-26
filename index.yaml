@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  brainboard-runner:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-02-26T09:31:02.046255685Z"
+    description: Helm chart to deploy Brainboard self hosted runner
+    digest: 011cbc33621042a422a60acd693eece6112cc30f76f4a63af878411d9a6ee107
+    icon: https://brainboard.s3.eu-central-1.amazonaws.com/Icon_Logo.png
+    name: brainboard-runner
+    type: application
+    urls:
+    - https://github.com/brainboard/helm-charts/releases/download/brainboard-runner-1.0.0/brainboard-runner-1.0.0.tgz
+    version: 1.0.0
+generated: "2024-02-26T09:31:02.046266966Z"
