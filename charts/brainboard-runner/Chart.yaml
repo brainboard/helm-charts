@@ -2,6 +2,6 @@ apiVersion: v2
 name: brainboard-runner
 description: Helm chart to deploy Brainboard self hosted runner
 type: application
-version: 1.0.0
+version: 1.0.1
 appVersion: 1.0.0
 icon: https://brainboard.s3.eu-central-1.amazonaws.com/Icon_Logo.png

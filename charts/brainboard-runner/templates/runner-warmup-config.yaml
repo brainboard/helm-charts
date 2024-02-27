@@ -14,12 +14,10 @@ data:
     echo "waiting for docker daemon to be ready"
     sleep 2
     done
-
-    PLUGINS=(opa drift terraform opentofu infracost terrascan tfsec webhook teams slack checkov email)
-
-    for PLUGIN in "${PLUGINS[@]}"; do
-      docker pull "{{ .Values.config.plugins.registry }}/${PLUGIN}:latest"
-    done
+    {{ $registry := .Values.config.plugins.registry }}
+    {{- range .Values.config.plugins.list }}
+    docker pull "{{ $registry }}/{{ .name }}:{{ .version }}"
+    {{- end }}
 
     echo "finished pulling plugins docker images"
   
@@ -27,4 +25,4 @@ data:
     do
     tail -f /dev/null & wait ${!}
     done
-{{- end }}
+    {{- end }}
