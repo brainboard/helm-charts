@@ -29,6 +29,31 @@ config:
 
   plugins:
     registry: registry.gitlab.com/brainboard/plugins
+    list:
+      - name: drift
+        version: latest
+      - name: opa
+        version: latest
+      - name: terraform
+        version: latest
+      - name: opentofu
+        version: latest
+      - name: infracost
+        version: latest
+      - name: terrascan
+        version: latest
+      - name: tfsec
+        version: latest
+      - name: webhook
+        version: latest
+      - name: teams
+        version: latest
+      - name: slack
+        version: latest
+      - name: checkov
+        version: latest
+      - name: email
+        version: latest
 
   credentials:
     # -- runner token generated in Brainboard Private selfhosted runner settings
