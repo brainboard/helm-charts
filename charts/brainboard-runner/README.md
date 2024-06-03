@@ -45,8 +45,3 @@ helm install runner brainboard/brainboard-runner
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `nil` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` | Tolerations for pod assignment https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/ |
-| warmup.enabled | bool | `false` | Set to true to add an additional container which will pull plugins image at start |
-| warmup.image.pullPolicy | string | `"IfNotPresent"` |  |
-| warmup.image.repository | string | `"docker"` |  |
-| warmup.image.tag | string | `"latest"` |  |
-

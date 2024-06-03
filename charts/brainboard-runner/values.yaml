@@ -29,31 +29,6 @@ config:
 
   plugins:
     registry: registry.gitlab.com/brainboard/plugins
-    list:
-      - name: drift
-        version: latest
-      - name: opa
-        version: latest
-      - name: terraform
-        version: latest
-      - name: opentofu
-        version: latest
-      - name: infracost
-        version: latest
-      - name: terrascan
-        version: latest
-      - name: tfsec
-        version: latest
-      - name: webhook
-        version: latest
-      - name: teams
-        version: latest
-      - name: slack
-        version: latest
-      - name: checkov
-        version: latest
-      - name: email
-        version: latest
 
   credentials:
     # -- runner token generated in Brainboard Private selfhosted runner settings
@@ -101,12 +76,3 @@ serviceAccount:
   # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name:
-
-warmup:
-  # -- Set to true to add an additional container which will pull plugins image at start
-  enabled: false
-  image:
-    repository: docker
-    tag: 23.0.2
-    pullPolicy: IfNotPresent
-
