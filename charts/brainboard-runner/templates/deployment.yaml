@@ -41,26 +41,6 @@ spec:
       {{- end }}
       {{- end }}
       containers:
-        {{- if .Values.warmup.enabled }}
-        - name: warmup
-          image: "{{.Values.warmup.image.repository}}:{{ .Values.warmup.image.tag }}"
-          imagePullPolicy: {{.Values.warmup.image.pullPolicy}}
-          command:
-            - /bin/warmup.sh
-          env:
-            - name: DOCKER_TLS_VERIFY
-              value: "1"
-            - name: DOCKER_HOST
-              value: tcp://127.0.0.1:2376
-            - name: DOCKER_CERT_PATH
-              value: /certs/client
-          volumeMounts:
-            - mountPath: /bin/warmup.sh
-              subPath: warmup.sh
-              name: warmup
-            - name: docker-certs
-              mountPath: /certs
-        {{- end}}
         - name: runner
           image: "{{.Values.image.repository}}:{{ .Values.image.tag }}"
           imagePullPolicy: {{.Values.image.pullPolicy}}
@@ -116,12 +96,6 @@ spec:
       - name: config
         configMap:
           name: {{ template "brainboard-runner.fullname" . }}-config
-      {{- if .Values.warmup.enabled }}
-      - name: warmup
-        configMap:
-          name: {{ template "brainboard-runner.fullname" . }}-warmup-config
-          defaultMode: 0744
-      {{- end }}
       - name: docker-certs
         emptyDir: {}
       - name: runner-tmp
