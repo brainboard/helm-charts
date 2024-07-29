@@ -23,7 +23,7 @@ config:
 
   api:
     # -- brainboard API url
-    endpoint: "https://app.brainboard.co/api"
+    endpoint: "https://api.us1.brainboard.co"
 
   logLevel: "info"
 
