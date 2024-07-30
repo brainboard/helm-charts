@@ -3,6 +3,17 @@ entries:
   brainboard-runner:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2024-07-30T13:35:56.819681859Z"
+    description: Helm chart to deploy Brainboard self hosted runner
+    digest: bcec4e1fb7bde83fba572512746b3a5214f933bdb357eb813c0d35ebf95d2cb0
+    icon: https://brainboard.s3.eu-central-1.amazonaws.com/Icon_Logo.png
+    name: brainboard-runner
+    type: application
+    urls:
+    - https://github.com/brainboard/helm-charts/releases/download/brainboard-runner-1.0.4/brainboard-runner-1.0.4.tgz
+    version: 1.0.4
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2024-07-29T12:09:44.646491387Z"
     description: Helm chart to deploy Brainboard self hosted runner
     digest: 11176e540fc1b6b4745712cd597053eca759dc73b2510e0f28eb30f5b9280ac2
@@ -45,4 +56,4 @@ entries:
     urls:
     - https://github.com/brainboard/helm-charts/releases/download/brainboard-runner-1.0.0/brainboard-runner-1.0.0.tgz
     version: 1.0.0
-generated: "2024-07-29T12:09:44.646517215Z"
+generated: "2024-07-30T13:35:56.819707367Z"
