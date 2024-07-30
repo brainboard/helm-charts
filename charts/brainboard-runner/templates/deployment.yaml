@@ -19,7 +19,7 @@ spec:
       labels:
         {{- include "brainboard-runner.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "brainboard-runner.fullname" . }}
+      serviceAccountName: {{ include "brainboard-runner.serviceAccountName" . }}
       {{- if .Values.affinity }}
       affinity:
         {{- toYaml .Values.affinity | nindent 8 }}
