@@ -8,6 +8,8 @@ image:
   tag: latest
   pullPolicy: Always
 
+replicas: 1
+
 config:
   # -- Name of the runner
   name: "brainboard-runner"

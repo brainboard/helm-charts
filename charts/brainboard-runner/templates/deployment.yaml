@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       {{- include "brainboard-runner.selectorLabels" . | nindent 6 }}
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   revisionHistoryLimit: 1
   strategy:
     type: RollingUpdate
