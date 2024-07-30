@@ -24,3 +24,7 @@ data:
     docker:
       registry: "{{ .Values.config.plugins.registry }}"
       shared_volume_path: "/secrets"
+      ecr_auth: {{ if .Values.config.plugins.ecr.enabled }}true{{ else }}false{{ end }}
+      {{- if .Values.config.plugins.ecr.enabled }}
+      ecr_region: {{ .Values.config.plugins.ecr.aws_region }}
+      {{ end }}

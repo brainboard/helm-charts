@@ -34,11 +34,9 @@ spec:
         {{- toYaml . | nindent 6 }}
         {{- end }}
       {{- end }}
-      {{- if .Values.initContainers }}
-      initContainers: {{- toYaml .Values.initContainers | nindent 6 }}
-      {{- if .Values.resources }}
-        resources: {{- toYaml .Values.resources | nindent 10 }}
-      {{- end }}
+      {{- with .Values.initContainers }}
+      initContainers:
+      {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: runner
@@ -75,6 +73,9 @@ spec:
               name: runner-tmp
             - name: docker-certs
               mountPath: /certs
+          {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
         - name: dind
           image: "{{ .Values.dind.image.repository }}:{{ .Values.dind.image.tag }}"
           imagePullPolicy: {{ .Values.dind.image.pullPolicy }}
@@ -92,6 +93,9 @@ spec:
               name: runner-tmp
             - name: docker-certs
               mountPath: /certs
+          {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       volumes:
       - name: config
         configMap:
@@ -100,3 +104,6 @@ spec:
         emptyDir: {}
       - name: runner-tmp
         emptyDir: {}
+      {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 6 }}
+      {{- end }}

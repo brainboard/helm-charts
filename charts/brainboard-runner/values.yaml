@@ -29,6 +29,11 @@ config:
 
   plugins:
     registry: registry.gitlab.com/brainboard/plugins
+    ecr:
+      # -- Set this value to true if you host runner plugins in AWS ECR registry
+      enabled: false
+      # -- AWS ECR registry region
+      aws_region: ""
 
   credentials:
     # -- runner token generated in Brainboard Private selfhosted runner settings
@@ -67,6 +72,12 @@ nodeSelector: {}
 # -- Tolerations for pod assignment
 # https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: []
+
+# -- Extra volumes to be added in addition to the default Volumes
+extraVolumes: []
+
+# -- Extra volume mounts to be added in addition to the default VolumeMounts
+extraVolumeMounts: []
 
 serviceAccount:
   # -- Specifies whether a service account should be created
