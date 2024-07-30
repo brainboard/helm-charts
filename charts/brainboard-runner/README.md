@@ -1,10 +1,17 @@
-# brainboard-runner
+# Brainboard self hosted runner chart
 
 ![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 Helm chart to deploy Brainboard self hosted runner
 
-## Values
+## Installation
+
+```sh
+helm repo add brainboard https://brainboard.github.io/helm-charts/
+helm install runner brainboard/brainboard-runner
+```
+
+## Configuration
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -42,4 +49,3 @@ Helm chart to deploy Brainboard self hosted runner
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `nil` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` | Tolerations for pod assignment https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/ |
-
